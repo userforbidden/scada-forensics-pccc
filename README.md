@@ -10,13 +10,18 @@ capture file is wireshark capture file of type *.pcap or *.pcapng
 destination-directory is the directory where your files will be stored
 
 =======================================================================================
-To use the file parsing use command
+
+To parse an extracted file use command
 python fileparse.py filenumber filetype file-path
 -
 filenumber can be 00 to 254 in hex
+
 filetype can be 00 to 254 in hex
+
 file-path is the directory path of the file to be parsed
+
 =======================================================================================
+
 Dependencies:
 -
 The only dependency for this tool is PyShark 
