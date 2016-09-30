@@ -2,17 +2,21 @@ PLC Ladder logic Extractor
 -
 This document tells you how to run and configuration needed for the tool
 
-To run the command use
+To run the extractor use command
 python extractor.py capturefile destination-directory
 -
-capture file is wireshark capture file of type *.pcap
+capture file is wireshark capture file of type *.pcap or *.pcapng
 
 destination-directory is the directory where your files will be stored
-<<<<<<< HEAD
-dfd
 
-=======
-
+=======================================================================================
+To use the file parsing use command
+python fileparse.py filenumber filetype file-path
+-
+filenumber can be 00 to 254 in hex
+filetype can be 00 to 254 in hex
+file-path is the directory path of the file to be parsed
+=======================================================================================
 Dependencies:
 -
 The only dependency for this tool is PyShark 
