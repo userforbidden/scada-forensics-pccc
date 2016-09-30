@@ -1,4 +1,5 @@
 import sys
+import string
 
 #check for command line arguments
 if len(sys.argv) < 4 :
@@ -8,8 +9,8 @@ if len(sys.argv) < 4 :
   print " Storage path is where the PLC file dumps are stored"
   sys.exit()
 else:
-  filenumber = str(sys.argv[1])
-  filetype = str(sys.argv[2])
+  filenumber = (str(sys.argv[1])).upper()
+  filetype = (str(sys.argv[2])).upper()
   strfile = str(sys.argv[3])
 
 
