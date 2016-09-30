@@ -59,7 +59,7 @@ with open(strfile, 'rb') as f:
       if ord(smtplist[5][1]) > 0:
 	print "To Address[1]: " + str(smtplist[5][2:])
       else:
-	print "To Address[1] Not Configured"
+	print "To Address[1]: Not Configured"
       if ord(smtplist[6][1]) > 0:
 	print "To Address[2]: " + str(smtplist[6][2:])
       else:
