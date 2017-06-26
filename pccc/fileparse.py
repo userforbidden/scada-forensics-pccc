@@ -364,7 +364,8 @@ class fileparse():
 	      message = template.format(type(ex).__name__, ex.args)
 	      if message == "NoSectionError":
 		print strn,
-		print "here Instruction not configured in Configuration File",
+		print " - This Instruction not configured in Configuration File -",
+		print "length of this non-configured instruction = " + str(len(strn)/2)
 	      elif message == "NoOptionError": 
 		pass
 	      elif message == "ValueError":

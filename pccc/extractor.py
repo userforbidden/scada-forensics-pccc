@@ -98,12 +98,12 @@ def main():
 	filepath = str(saveDir)+"/"+str(dirName[0])+"res"
 	#print filepath
 	if os.path.isdir(filepath):
-	  print "directory exist"
+	  print "Result directory exist removing and recreating"
 	  shutil.rmtree(filepath)
 	  dial1 = extractor()
 	  dial1.extract_from_pcap(capturefile,filepath)
 	else:
-	  print "Directory Don't exist"
+	  print "Result Directory Don't exist, Creating and extracting results to " + str(filepath)
 	  dial1 = extractor()
 	  dial1.extract_from_pcap(capturefile,filepath)
 if __name__ == '__main__': 
