@@ -14,40 +14,44 @@ class ladderDrawer:
       print "Ladder Drawer Initiated"
     
     imagePathForHorizontalMerging = []
+    imagePathForMergingAll = []
     saveDir = ""
       
-    def setFilepath(self, instructions, num):
-      print "Rung Number : " + str(num)
-      del self.imagePathForHorizontalMerging[:]
-      propertyVar = propertyFile()
-      propertyVar.changePath()
-      #print str(self.imagePathForHorizontalMerging) + str(num)
-      
-      self.imagePathForHorizontalMerging.append(propertyVar.blankSpacePath)
-      self.imagePathForHorizontalMerging.append(propertyVar.verlinePath)
-      
+    def setFilepath(self, instructions):
       for i in range(0, len(instructions)):
-	  #print instructions[i][0:2]
-	  if instructions[i][0:2] == 'e4':
+	#print instructions[i]
+	#print "Rung Number : " + str(i)
+	imagename = "Rung:"+str(i)
+	del self.imagePathForHorizontalMerging[:]
+	propertyVar = propertyFile()
+	propertyVar.changePath()
+	#print str(self.imagePathForHorizontalMerging) + str(i)
+	self.imagePathForHorizontalMerging.append(propertyVar.blankSpacePath)
+	self.imagePathForHorizontalMerging.append(propertyVar.verlinePath)
+	for j in range(0, len(instructions[i])):
+	  #for i in range(0, len(instructions)):
+	  #print instructions[i][j][0:4]
+	  if instructions[i][j][0:4] == '00E4':
 	    #im = Image.open(propertyVar.xicPath)
 	    #print im.size
 	    self.imagePathForHorizontalMerging.append(propertyVar.horlinePath)
 	    self.imagePathForHorizontalMerging.append(propertyVar.xicPath)
 	    self.imagePathForHorizontalMerging.append(propertyVar.horlinePath)
-	  elif instructions[i][0:2] == 'bc':
+	  elif instructions[i][j][0:4] == '00BC':
 	    self.imagePathForHorizontalMerging.append(propertyVar.horlinePath)
 	    self.imagePathForHorizontalMerging.append(propertyVar.outputEnergizerPath)
 	    self.imagePathForHorizontalMerging.append(propertyVar.horlinePath)
-	  elif instructions[i][0:2] == '30':
+	  elif instructions[i][j][0:4] == '0030':
 	    self.imagePathForHorizontalMerging.append(propertyVar.horlinePath)
 	    self.imagePathForHorizontalMerging.append(propertyVar.endPath)
 	    self.imagePathForHorizontalMerging.append(propertyVar.horlinePath)
 	    
-      self.imagePathForHorizontalMerging.append(propertyVar.verlinePath)
-      self.imagePathForHorizontalMerging.append(propertyVar.blankSpacePath)
-      #print str(self.imagePathForHorizontalMerging) + str(num)
-      return self.imagePathForHorizontalMerging
-      #print self.imagePathForVerticalMerging
+	self.imagePathForHorizontalMerging.append(propertyVar.verlinePath)
+	self.imagePathForHorizontalMerging.append(propertyVar.blankSpacePath)
+	#print str(self.imagePathForHorizontalMerging) + str(num)
+	#print self.imagePathForHorizontalMerging
+	self.combineImageHorizontally(self.imagePathForHorizontalMerging,imagename)
+	#print self.imagePathForVerticalMerging
     
     def combineImageHorizontally(self,fileList,newfileName):
         dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -64,7 +68,7 @@ class ladderDrawer:
 	  new_im.paste(im, (x_offset,0))
 	  x_offset += im.size[0]
 	
-	dir_com = dir_path+'/'+self.saveDir
+	dir_com = self.saveDir
 	print dir_com
 	if not os.path.exists(dir_com):
 	    os.makedirs(dir_com)

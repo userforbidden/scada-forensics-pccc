@@ -39,6 +39,7 @@ class fileparse():
     datafile_config = ConfigParser.RawConfigParser()
     datafile_config.read('datafileconfig.ini')
     datafileCount = 1
+    #ld = ""
     
     def fileFinder(self,strfile,filetype):
       #open the file in Binary read mode
@@ -216,7 +217,12 @@ class fileparse():
 		self.createFileConfig(self.all_config)
 		self.ladderParser(f)
 		self.printReadableInstruction(self.allRungFileList)
-	      #fl = ld.setFilepath(self.all_instructions, i)
+		
+		ld = ladderDrawer()
+	        saveDir1 = str(self.saveDir) + '/ImageResults/'#+str(self.fileNameDir[5])+'/'
+	        #print saveDir1
+	        ld.setSaveDir(saveDir1)
+		ld.setFilepath(self.allRungFileList)
 	      #print fl
 	      #ld.combineImageHorizontally(fl,imagename)
 	      #print ld.getAllFilePath()
@@ -243,9 +249,7 @@ class fileparse():
 	  #continue
 	
     def ladderParser(self, f1):
-	  #ld = ladderDrawer()
-	  #saveDir1 = 'Results'+'/'+str(self.fileNameDir[5])+'/'
-	  #ld.setSaveDir(saveDir1)
+	
 	try:
 	    buf = f1.read()
 	    nb = ''.join([ buf[x:x+2][::-1] for x in range(0, len(buf), 2) ])

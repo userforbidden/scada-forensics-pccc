@@ -31,7 +31,7 @@ class propertyFile:
             self.load()    
     
     def load(self):
-            print "Loading"
+            print "Loading all instructions path"
             self.xicPath = self.loadInstructionsPath + "XIC.JPG"
             self.endPath = self.loadInstructionsPath + "end.JPG"
             self.horlinePath = self.loadInstructionsPath + "horline.JPG"
