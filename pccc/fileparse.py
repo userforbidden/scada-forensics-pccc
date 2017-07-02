@@ -218,11 +218,11 @@ class fileparse():
 		self.ladderParser(f)
 		self.printReadableInstruction(self.allRungFileList)
 		
-		ld = ladderDrawer()
-	        saveDir1 = str(self.saveDir) + '/ImageResults/'#+str(self.fileNameDir[5])+'/'
-	        #print saveDir1
-	        ld.setSaveDir(saveDir1)
-		ld.setFilepath(self.allRungFileList)
+		#ld = ladderDrawer()
+	        #saveDir1 = str(self.saveDir) + '/ImageResults/'#+str(self.fileNameDir[5])+'/'
+	        ##print saveDir1
+	        #ld.setSaveDir(saveDir1)
+		#ld.setFilepath(self.allRungFileList)
 	      #print fl
 	      #ld.combineImageHorizontally(fl,imagename)
 	      #print ld.getAllFilePath()
