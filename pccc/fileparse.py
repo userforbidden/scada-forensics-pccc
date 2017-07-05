@@ -596,6 +596,22 @@ class fileparse():
 		ins_instype = each_val
 	      elif each_key == 'timebase':
 		ins_timebase = each_val
+	      elif each_key == 'fsstart':
+		ins_sf_start = int(each_val)
+	      elif each_key == 'fsend':
+		ins_sf_end = int(each_val)
+	      elif each_key == 'fsbstart':
+		ins_sfb_start = int(each_val)
+	      elif each_key == 'fsbend':
+		ins_sfb_end = int(each_val)
+	      elif each_key == 'fostart':
+		ins_of_start = int(each_val)
+	      elif each_key == 'foend':
+		ins_of_end = int(each_val)
+	      elif each_key == 'fobstart':
+		ins_ofb_start = int(each_val)
+	      elif each_key == 'fobend':
+		ins_ofb_end = int(each_val)
 	      else:
 		continue
 	  #print ins_instype
@@ -606,34 +622,25 @@ class fileparse():
 	    ins_denotion = file_Settings.get(ins_address,'denotion')
 	    ins_file_number = file_Settings.get(ins_address,'dataconfignum')
 	    ins_wordaddress = file_Settings.getint(ins_address,'wordaddress')
-	    if ins_denotion == 'T':
-	      #print ins_wordaddress
-	      b = ins_wordaddress/6
-	      bit_address = (ins_wordaddress*8) + bit_address
-	      c,d = divmod(bit_address,3)
-	      #print b,c
-	      gg = self.datafile_config.get('TIMERCONFIG',str(d))
-	      output = str(ins_inscode)+"/"+str(ins_denotion)+str(ins_file_number)+":"+str(b)+"/"+gg#+strn
-	    elif ins_denotion == 'C':
-	      #print ins_wordaddress
-	      b = ins_wordaddress/8
-	      bit_address = (ins_wordaddress*8) + bit_address
-	      c,d = divmod(bit_address,6)
-	      #print b,c
-	      gg = self.datafile_config.get('COUNTERCONFIG',str(d))
-	      output = str(ins_inscode)+"/"+str(ins_denotion)+str(ins_file_number)+":"+str(b)+"/"+gg#+strn
-	    elif ins_denotion == 'R':
-	      #print ins_wordaddress
-	      b = ins_wordaddress/10
-	      bit_address = (ins_wordaddress*8) + bit_address
-	      c,d = divmod(bit_address,10)
-	      #print b,c
-	      gg = self.datafile_config.get('CONTROLCONFIG',str(d))
-	      output = str(ins_inscode)+"/"+str(ins_denotion)+str(ins_file_number)+":"+str(b)+"/"+gg#+strn
-	    else:
-	      bit_address = (ins_wordaddress*8) + bit_address
-	      b,c = divmod(bit_address,16)
-	      output = str(ins_inscode)+"/"+str(ins_denotion)+str(ins_file_number)+":"+str(b)+"/"+str(c)#+strn
+	    output = str(ins_inscode)+ "/" + self.getAddressOfDatafileinIns(ins_denotion, bit_address, ins_wordaddress, ins_file_number)
+	  elif ins_instype == 'longbit':
+	    sf_address = str(strn[(ins_sf_start*2):(ins_sf_end*2)]).upper()
+	    sf_bit_address = int(strn[(ins_sfb_start*2):(ins_sfb_end*2)],16)
+	    of_address = str(strn[(ins_of_start*2):(ins_of_end*2)]).upper()
+	    of_bit_address = int(strn[(ins_ofb_start*2):(ins_ofb_end*2)],16)
+	    
+	    ins_filetype = file_Settings.get(sf_address,'filetype')
+	    ins_denotion = file_Settings.get(sf_address,'denotion')
+	    ins_file_number = file_Settings.get(sf_address,'dataconfignum')
+	    ins_wordaddress = file_Settings.getint(sf_address,'wordaddress')
+	    output = str(ins_inscode) + "/" +self.getAddressOfDatafileinIns(ins_denotion, sf_bit_address, ins_wordaddress, ins_file_number)
+	    
+	    ins_filetype = file_Settings.get(of_address,'filetype')
+	    ins_denotion = file_Settings.get(of_address,'denotion')
+	    ins_file_number = file_Settings.get(of_address,'dataconfignum')
+	    ins_wordaddress = file_Settings.getint(of_address,'wordaddress')
+	    output += "/" +self.getAddressOfDatafileinIns(ins_denotion, of_bit_address, ins_wordaddress, ins_file_number)
+	    
 	  elif ins_instype == 'end':
 	     output = str(ins_inscode)
 	  elif ins_instype == 'timer':
@@ -674,6 +681,57 @@ class fileparse():
 	  else:
 		print message
 		pass  
+    
+    
+    def getAddressOfDatafileinIns(self, denotion, bitaddress, wordaddress, file_number):
+	try:
+	  if denotion == 'T':
+	      #print ins_wordaddress
+	      b = wordaddress/6
+	      bit = (wordaddress*8) + bitaddress
+	      c,d = divmod(bit,3)
+	      #print b,c
+	      gg = self.datafile_config.get('TIMERCONFIG',str(d))
+	      fileaddress = "["+str(denotion)+str(file_number)+":"+str(b)+"/"+gg+"]"#+strn
+	  elif denotion == 'C':
+	      #print ins_wordaddress
+	      b = wordaddress/8
+	      bit = (wordaddress*8) + bitaddress
+	      c,d = divmod(bit,6)
+	      #print b,c
+	      gg = self.datafile_config.get('COUNTERCONFIG',str(d))
+	      fileaddress = "["+str(denotion)+str(file_number)+":"+str(b)+"/"+gg+"]"#+strn
+	  elif denotion == 'R':
+	      #print ins_wordaddress
+	      b = wordaddress/10
+	      bit = (wordaddress*8) + bitaddress
+	      c,d = divmod(bit,10)
+	      #print b,c
+	      gg = self.datafile_config.get('CONTROLCONFIG',str(d))
+	      fileaddress = "["+str(denotion)+str(file_number)+":"+str(b)+"/"+gg+"]"#+strn
+	  else:
+	      #print denotion, bitaddress, wordaddress, file_number, inscode
+	      bit = (wordaddress*8) + bitaddress
+	      b,c = divmod(bit,16)
+	      fileaddress =  "["+str(denotion)+str(file_number)+":"+str(b)+"/"+str(c)+"]"#+strn
+	
+	  return fileaddress
+	except Exception as ex:
+	  template = "{0}"
+	  message = template.format(type(ex).__name__, ex.args)
+	  print "At getAddressOfDatafileinIns:" + message
+	  if message == "NoSectionError":
+		print strn
+		print "Instruction not configured in Configuration File",
+	  elif message == "NoOptionError": 
+		pass
+	  elif message == "ValueError":
+		instruc = strn[0:(ins_size*2)].upper()
+		#instruc = str(ins_inscode)
+		self.all_instructions.append(instruc)
+	  else:
+		print message
+		pass
       
     def setAllFilePath(self, strn):
         print self.imagePathForVerticalMerging
