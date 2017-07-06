@@ -597,50 +597,50 @@ class fileparse():
 	      elif each_key == 'timebase':
 		ins_timebase = each_val
 	      elif each_key == 'fsstart':
-		ins_sf_start = int(each_val)
+		ins_sf_start = int(each_val) 	#Source file addresss start point
 	      elif each_key == 'fsend':
-		ins_sf_end = int(each_val)
+		ins_sf_end = int(each_val)   	#Source file address end point 
 	      elif each_key == 'fsbstart':
-		ins_sfb_start = int(each_val)
+		ins_sfb_start = int(each_val)	#Source file bitaddress start point
 	      elif each_key == 'fsbend':
-		ins_sfb_end = int(each_val)
+		ins_sfb_end = int(each_val)	#Source file bitaddress end point
 	      elif each_key == 'fostart':
-		ins_of_start = int(each_val)
+		ins_of_start = int(each_val)	#Output file address start point
 	      elif each_key == 'foend':
-		ins_of_end = int(each_val)
+		ins_of_end = int(each_val)	#Output file address start point
 	      elif each_key == 'fobstart':
-		ins_ofb_start = int(each_val)
+		ins_ofb_start = int(each_val)	#Output file bitaddress start point
 	      elif each_key == 'fobend':
-		ins_ofb_end = int(each_val)
+		ins_ofb_end = int(each_val)	#Output file bit address end point
+	      elif each_key == '1_var_start':
+		ins_1var_start = int(each_val) 
+	      elif each_key == '1_var_end':
+		ins_1var_end = int(each_val)
+	      elif each_key == '2_var_start':
+		ins_2var_start = int(each_val) 
+	      elif each_key == '2_var_end':
+		ins_2var_end = int(each_val)
+	      elif each_key == '3_var_start':
+		ins_3var_start = int(each_val) 
+	      elif each_key == '3_var_end':
+		ins_3var_end = int(each_val)
 	      else:
 		continue
 	  #print ins_instype
 	  if ins_instype == 'bit':
 	    ins_address = str(strn[(ins_fs*2):(ins_fe*2)]).upper()
 	    bit_address = int(strn[(ins_bs*2):(ins_be*2)],16)
-	    ins_filetype = file_Settings.get(ins_address,'filetype')
-	    ins_denotion = file_Settings.get(ins_address,'denotion')
-	    ins_file_number = file_Settings.get(ins_address,'dataconfignum')
-	    ins_wordaddress = file_Settings.getint(ins_address,'wordaddress')
-	    output = str(ins_inscode)+ "/" + self.getAddressOfDatafileinIns(ins_denotion, bit_address, ins_wordaddress, ins_file_number)
+	    output = str(ins_inscode)+ "/" + self.getAddressOfDatafileinIns(ins_address, bit_address, 'TRUE')
 	  elif ins_instype == 'longbit':
 	    sf_address = str(strn[(ins_sf_start*2):(ins_sf_end*2)]).upper()
 	    sf_bit_address = int(strn[(ins_sfb_start*2):(ins_sfb_end*2)],16)
 	    of_address = str(strn[(ins_of_start*2):(ins_of_end*2)]).upper()
 	    of_bit_address = int(strn[(ins_ofb_start*2):(ins_ofb_end*2)],16)
-	    
-	    ins_filetype = file_Settings.get(sf_address,'filetype')
-	    ins_denotion = file_Settings.get(sf_address,'denotion')
-	    ins_file_number = file_Settings.get(sf_address,'dataconfignum')
-	    ins_wordaddress = file_Settings.getint(sf_address,'wordaddress')
-	    output = str(ins_inscode) + "/" +self.getAddressOfDatafileinIns(ins_denotion, sf_bit_address, ins_wordaddress, ins_file_number)
-	    
-	    ins_filetype = file_Settings.get(of_address,'filetype')
-	    ins_denotion = file_Settings.get(of_address,'denotion')
-	    ins_file_number = file_Settings.get(of_address,'dataconfignum')
-	    ins_wordaddress = file_Settings.getint(of_address,'wordaddress')
-	    output += "/" +self.getAddressOfDatafileinIns(ins_denotion, of_bit_address, ins_wordaddress, ins_file_number)
-	    
+	    if ins_inscode == 'RHC':
+	      output = str(ins_inscode) + "/" + self.getAddressOfDatafileinIns(sf_address, sf_bit_address, 'FALSE')
+	    else:
+	      output = str(ins_inscode) + "/" + self.getAddressOfDatafileinIns(sf_address, sf_bit_address, 'TRUE') + "/" + self.getAddressOfDatafileinIns(of_address, of_bit_address, 'TRUE')
+	    	    
 	  elif ins_instype == 'end':
 	     output = str(ins_inscode)
 	  elif ins_instype == 'timer':
@@ -652,6 +652,7 @@ class fileparse():
 	    ins_denotion = file_Settings.get(ins_address,'denotion')
 	    ins_file_number = file_Settings.get(ins_address,'dataconfignum')
 	    ins_wordaddress = file_Settings.getint(ins_address,'wordaddress')
+	    
 	    timedatafilename = self.saveDir + "/file:" + str(ins_file_number).zfill(2) + "-Type:" + ins_filetype_num
 	    with open(timedatafilename, 'rb') as tf:
 	      timbuf = tf.read()
@@ -659,7 +660,25 @@ class fileparse():
 	      thexx = binascii.hexlify(ntb)
 	      indi_t = filecap.borders(thexx,12)
 	      #print indi_t[bit_address]
-	      output = str(ins_inscode)+"/"+str(ins_denotion)+str(ins_file_number)+":"+ str(bit_address)+"/"+str(ins_timebase)+"/"+str(int(indi_t[bit_address][5:8],16))+"/"+str(int(indi_t[bit_address][10:12],16))
+	      
+	      if ins_inscode == 'RES':
+		output = str(ins_inscode) + "/[" + str(ins_denotion)+str(ins_file_number)+":"+ str(bit_address)+"]"
+	      elif ins_denotion == 'T':
+		output = str(ins_inscode)+"/["+str(ins_denotion)+str(ins_file_number)+":"+ str(bit_address)+"/"+str(ins_timebase)+"/"+str(int(indi_t[bit_address][5:8],16))+"/"+str(int(indi_t[bit_address][10:12],16))+"]"  
+	      else: 
+		output = str(ins_inscode)+"/["+str(ins_denotion)+str(ins_file_number)+":"+ str(bit_address)+"/"+str(int(indi_t[bit_address][5:8],16))+"/"+str(int(indi_t[bit_address][10:12],16))+"]"
+	      
+	  elif ins_instype == 'compare1':
+	    first_address = str(strn[(ins_1var_start*2):(ins_1var_end*2)]).upper()
+	    second_address = str(strn[(ins_2var_start*2):(ins_2var_end*2)]).upper()
+	    third_address = str(strn[(ins_3var_start*2):(ins_3var_end*2)]).upper()
+	    
+	    if ins_inscode == 'LIM':
+	      output = str(ins_inscode) + "/" + self.getAddressOfDatafileinIns(third_address[0:4], int(third_address[4:],16), 'FALSE') + "/" + self.getAddressOfDatafileinIns(first_address[0:4], int(first_address[4:],16), 'FALSE') + "/" + self.getAddressOfDatafileinIns(second_address[0:4], int(second_address[4:],16), 'FALSE')
+	    elif ins_inscode == 'MEQ':
+	      output = str(ins_inscode) + "/" + self.getAddressOfDatafileinIns(first_address[0:4], int(first_address[4:],16), 'FALSE') + "/" + self.getAddressOfDatafileinIns(second_address[0:4], int(second_address[4:],16), 'FALSE') + "/" + self.getAddressOfDatafileinIns(third_address[0:4], int(third_address[4:],16), 'FALSE')
+	    else:
+	      output = str(ins_inscode) + "/" + self.getAddressOfDatafileinIns(third_address[0:4], int(third_address[4:],16), 'FALSE') + "/" + self.getAddressOfDatafileinIns(first_address[0:4], int(first_address[4:],16), 'FALSE') + "/" + self.getAddressOfDatafileinIns(second_address[0:4], int(second_address[4:],16), 'FALSE')
 	  else:
 	     output = strn + "/" +str(ins_inscode)
 	  return output
@@ -683,8 +702,16 @@ class fileparse():
 		pass  
     
     
-    def getAddressOfDatafileinIns(self, denotion, bitaddress, wordaddress, file_number):
+    def getAddressOfDatafileinIns(self, ins_address, bitaddress, bitflag):
+	#print ins_address, bitaddress
+	dec_value = 0
+	file_config_path = self.saveDir +'/fileconfig.ini'
+	file_Settings = ConfigParser.RawConfigParser()
+	file_Settings.read(file_config_path)
 	try:
+	  denotion = file_Settings.get(ins_address,'denotion')
+	  file_number = file_Settings.get(ins_address,'dataconfignum')
+	  wordaddress = file_Settings.getint(ins_address,'wordaddress')
 	  if denotion == 'T':
 	      #print ins_wordaddress
 	      b = wordaddress/6
@@ -713,16 +740,18 @@ class fileparse():
 	      #print denotion, bitaddress, wordaddress, file_number, inscode
 	      bit = (wordaddress*8) + bitaddress
 	      b,c = divmod(bit,16)
-	      fileaddress =  "["+str(denotion)+str(file_number)+":"+str(b)+"/"+str(c)+"]"#+strn
+	      if bitflag == 'TRUE':
+		fileaddress =  "["+str(denotion)+str(file_number)+":"+str(b)+"/"+str(c)+"]"#+strn
+	      else:
+		fileaddress =  "["+str(denotion)+str(file_number)+":"+str(b)+"]"#+strn
 	
 	  return fileaddress
 	except Exception as ex:
 	  template = "{0}"
 	  message = template.format(type(ex).__name__, ex.args)
-	  print "At getAddressOfDatafileinIns:" + message
+	  #print "At getAddressOfDatafileinIns:" + message
 	  if message == "NoSectionError":
-		print strn
-		print "Instruction not configured in Configuration File",
+		return str(int(str(ins_address) + str(bitaddress)))
 	  elif message == "NoOptionError": 
 		pass
 	  elif message == "ValueError":
