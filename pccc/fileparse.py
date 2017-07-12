@@ -256,6 +256,7 @@ class fileparse():
 	    hexx = binascii.hexlify(nb)
 	    #print hexx
 	    self.rungSplitter(hexx)
+	    #print self.all_rungs
 	    for i in range(0,len(self.all_rungs)):
 	      del self.all_instructions[:]
 	      self.instructionSplitter(self.all_rungs[i][12:])
@@ -265,6 +266,7 @@ class fileparse():
 	      for j in range(0,len(self.all_instructions)):
 		    TEMP.append(self.all_instructions[j])
 	      self.allRungFileList.append(TEMP)
+	    #print self.allRungFileList
 
 	except Exception as ex:
 	    print "At ladderParser"
@@ -680,7 +682,7 @@ class fileparse():
 	    else:
 	      output = str(ins_inscode) + "/" + self.getAddressOfDatafileinIns(third_address[0:4], int(third_address[4:],16), 'FALSE') + "/" + self.getAddressOfDatafileinIns(first_address[0:4], int(first_address[4:],16), 'FALSE') + "/" + self.getAddressOfDatafileinIns(second_address[0:4], int(second_address[4:],16), 'FALSE')
 	  else:
-	     output = strn + "/" +str(ins_inscode)
+	     output = str(ins_inscode) + "/" + strn 
 	  return output
 
 

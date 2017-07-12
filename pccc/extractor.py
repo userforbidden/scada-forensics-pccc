@@ -45,12 +45,12 @@ class extractor():
 	    allpkts[i].insert(0, i_4f)
 	    res_pkts.append(allpkts[i])
 	    i_4f += 1 
-	  elif allpkts[i][0] == "06":
+	  elif allpkts[i][0] == "06":		#Echo packets
 	    allpkts[i].insert(0, i_06)
 	    other_cmd_pkts.append(allpkts[i])
 	    i_06 += 1
 	  else:
-	    allpkts[i].insert(0,i_46)
+	    allpkts[i].insert(0,i_46)		#Echo response and other packets
 	    other_reply_pkts.append(allpkts[i])
 	    i_46 += 1
       except IndexError as e1:
