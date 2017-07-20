@@ -40,6 +40,7 @@ class fileparse():
     datafile_config.read('datafileconfig.ini')
     datafileCount = 1
     #ld = ""
+    #test by pranita
     
     def fileFinder(self,strfile,filetype):
       #open the file in Binary read mode
