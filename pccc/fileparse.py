@@ -483,7 +483,7 @@ class fileparse():
 		    try:
 		      self.printoutput = self.getConfigPrintSections(allrunglist[i][j])
 		      if allrunglist[i][j+2] != '':
-			print "("+str(self.printoutput)+")" + ' OR ',
+			print "("+str(self.printoutput)+")" + ' AND ',
 		    except Exception as ex:
 		      template = "{0}"
 		      message = template.format(type(ex).__name__, ex.args)
@@ -509,13 +509,13 @@ class fileparse():
 			  try:
 			    #print "(",
 			    if allrunglist[i][j][k+1][0] == 'T':
-			      print "("+self.printoutput+ " OR",
+			      print "("+self.printoutput+ " AND",
 			    else:
 			      if allrunglist[i][j][k][0] == 'T':
-				print self.printoutput + ")" + " AND",
+				print self.printoutput + ")" + " OR",
 			      else:
 				print "(",
-				print self.printoutput+")" + " AND",
+				print self.printoutput+")" + " OR",
 			  except:
 			    template = "{0}"
 			    message = template.format(type(ex).__name__, ex.args)
@@ -523,7 +523,7 @@ class fileparse():
 			    if message == "IndexError":
 			      print self.printoutput,
 			      pass
-		      print ")" + " OR",
+		      print ")" + " AND",
 		  except Exception as ex:
 		      template = "{0}"
 		      message = template.format(type(ex).__name__, ex.args)
@@ -543,13 +543,13 @@ class fileparse():
 			      try:
 				#print "(",
 				if allrunglist[i][j][k+1][0] == 'T':
-				  print "("+self.printoutput+ " OR",
+				  print "("+self.printoutput+ " AND",
 				else:
 				  if allrunglist[i][j][k][0] == 'T':
-				    print self.printoutput + ")" + " AND",
+				    print self.printoutput + ")" + " OR",
 				  else:
 				    print "(",
-				    print self.printoutput+")" + " AND",
+				    print self.printoutput+")" + " OR",
 			      except:
 				template = "{0}"
 				message = template.format(type(ex).__name__, ex.args)
